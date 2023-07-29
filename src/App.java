@@ -9,11 +9,11 @@ public class App {
         Account account = new Account();
         Login login = new Login();
 
-        // Scanner inpuScanner = new Scanner(System.in);
+        // Scanner inputScanner = new Scanner(System.in);
         // System.out.println("1 : Create Account ");        
         // System.out.println("2 : Login ");
 
-        // int answer = inpuScanner.nextInt();
+        // int answer = inputScanner.nextInt();
 
         // if(answer == 1) {
         //     account.createAccount();
@@ -27,7 +27,8 @@ public class App {
 
         // login.accountValidation();
 
-        account.createAccount();
+        // account.createAccount();
+        account.deposit(1000);
 
     }
 

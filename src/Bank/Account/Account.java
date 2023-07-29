@@ -1,6 +1,7 @@
 package Bank.Account;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -89,9 +90,48 @@ public class Account {
 
         }
         catch(Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
 
+    }
+
+    public void deposit(double amount) {
+
+        balance += amount;
+
+        try(Connection connection = getConnection()) {
+
+            Statement statement = connection.createStatement();
+
+            String updateStatement = "UPDATE users SET balance=" + balance + " WHERE id=1";
+            
+            PreparedStatement preparedStatement = connection.prepareStatement(updateStatement);
+
+            preparedStatement.executeUpdate();
+
+            statement.close();
+            connection.close();
+            
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void withdraw(double amount) {
+
+        if(balance >= amount) {
+
+            try(Connection connection = getConnection()) {
+                
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+
+        }
     }
 
 }
