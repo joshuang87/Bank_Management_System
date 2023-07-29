@@ -1,39 +1,53 @@
+package Bank.Account;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
 public class Account {
     
     //  MYSQL DATABASE URL
-    private String dBUrl = "jdbc:mysql://localhost:3306/bank_management_system";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/bank_management_system";
     //  MYSQL USERNAME
-    private String dBUsername = "root";
+    private static final String DB_USER = "root";
     //  MYSQL PASSWORD
-    private String dBPassword = "";
+    private static final String DB_PASSWORD = "";
 
-    private String userName;
+    private String username;
     private String password;
+    private double balance;
 
     public Account(){
 
     }
 
-    public Account(String userName, String password) {
-        this.userName = userName;
+    public Account(String username, String password, double balance) {
+        this.username = username;
         this.password = password;
+        this.balance = balance;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    /** 
+     * Returns a connection to the database. 
+     *  
+     * @return a connection object 
+     * @throws SQLException if a database access error occurs 
+     */
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+    }
+
+    public void setUserName(String username) {
+        this.username = username;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
@@ -55,12 +69,7 @@ public class Account {
 
         inputScanner.close();
 
-        try  {
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            //  MAKE CONNECTION WITH MYSQL DATABASE
-            Connection connection = DriverManager.getConnection(dBUrl, dBUsername, dBPassword);
+        try(Connection connection = getConnection()) {
 
             Statement statement = connection.createStatement();
 

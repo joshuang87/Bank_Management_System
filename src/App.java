@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import Bank.*;
+import Bank.Account.Account;
 
 public class App {
 
@@ -23,7 +25,9 @@ public class App {
         //     System.out.println("Invalid Input");
         // }
 
-        login.accountValidation();
+        // login.accountValidation();
+
+        account.createAccount();
 
     }
 

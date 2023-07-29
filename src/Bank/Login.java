@@ -1,10 +1,11 @@
+package Bank;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class Login extends Account{
+public class Login {
 
     //  MYSQL DATABASE URL
     private String dBUrl = "jdbc:mysql://localhost:3306/bank_management_system";
