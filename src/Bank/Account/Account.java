@@ -47,12 +47,20 @@ public class Account {
         this.password = password;
     }
 
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
     public String getUsername() {
         return username;
     }
 
     public String getPassword() {
         return password;
+    }
+
+    public double getBalance() {
+        return balance;
     }
 
     public void createAccount() {
@@ -95,6 +103,7 @@ public class Account {
 
     }
 
+
     public void deposit(double amount) {
 
         balance += amount;
@@ -118,12 +127,22 @@ public class Account {
         }
     }
 
-    public void withdraw(double amount) {
+
+    public void withdraw(String username, double amount) {
 
         if(balance >= amount) {
 
             try(Connection connection = getConnection()) {
-                
+
+                String query = "UPDATE users SET balance = balance - ? WHERE username = ?";
+
+                PreparedStatement statement = connection.prepareStatement(query);
+
+                statement.setDouble(1, amount);
+
+                statement.setString(2, username);
+
+                statement.executeUpdate();
             }
             catch(Exception e) {
                 e.printStackTrace();
