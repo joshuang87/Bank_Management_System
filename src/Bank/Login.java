@@ -42,7 +42,7 @@ public class Login {
 
             Statement statement = connection.createStatement();
 
-            String checkUsername = "SELECT * FROM users WHERE name='" + userName + "'";
+            String checkUsername = "SELECT * FROM users WHERE userName='" + userName + "'";
             String checkPassword = "SELECT * FROM users WHERE password='" + userPassword + "'";
 
             ResultSet usernameSet = statement.executeQuery(checkUsername);

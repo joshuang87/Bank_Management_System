@@ -1,10 +1,6 @@
 package Bank.Account;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Scanner;
+import java.sql.*;
 
 public class Account {
     
@@ -62,46 +58,139 @@ public class Account {
     public double getBalance() {
         return balance;
     }
-
+/* 
     public void createAccount() {
 
         //  CREATE A SCANNER OBJECT 
         Scanner inputScanner = new Scanner(System.in);
 
-        //  USERNAME INPUT
-        System.out.print("Enter Your Username : ");
-        String userName = inputScanner.nextLine();
+        System.out.print("Select your account type : 1.current, 2.fixed deposit, 3.saving ");
+        int select = inputScanner.nextInt();
+        String accountType = getAccountType(select);
 
-        //  USER PASSWORD INPUT
-        System.out.print("Enter Your Password : ");
-        String userPassword = inputScanner.nextLine();
+        if(select == 1){
+            System.out.print("Enter Your Username : ");
+            String userName = inputScanner.nextLine();
 
-        inputScanner.close();
+            System.out.print("Enter Your Password : ");
+            String userPassword = inputScanner.nextLine();
 
-        try(Connection connection = getConnection()) {
+            inputScanner.close();
 
-            Statement statement = connection.createStatement();
+            try(Connection connection = getConnection()) {
 
-            String createStatement = "INSERT INTO `users` (`name`, `password`) VALUES ('" + userName + "','" + userPassword + "')";
+                Statement statement = connection.createStatement();
 
-            int create = statement.executeUpdate(createStatement);
+                String createStatement = "INSERT INTO `users` (`userName`, `password`) VALUES ('" + userName + "','" + userPassword + "')";
 
-            if(create > 0) {
-                System.out.println("Account Created");
+                int create = statement.executeUpdate(createStatement);
+
+                if(create > 0) {
+                    System.out.println("Account Created");
+                }
+                else {
+                    System.out.println("Account Create Failure");
+                }
+
+                statement.close();
+                connection.close();
+
             }
-            else {
-                System.out.println("Account Create Failure");
+            catch(Exception e) {
+                e.printStackTrace();
             }
 
-            statement.close();
-            connection.close();
+            }
+        }*/
 
+        public void registerUser() {
+            try (Connection connection = getConnection()) {
+                Scanner inputScanner = new Scanner(System.in);
+                
+                System.out.print("Select your account type: 1. Current Account, 2. Fixed Deposit, 3. Saving Table: ");
+                int select = inputScanner.nextInt();
+                String accountType = getAccountType(select);
+                
+                if (accountType != null) {
+                    System.out.print("Enter username: ");
+                    String username = inputScanner.next();
+                    System.out.print("Enter password: ");
+                    String password = inputScanner.next();
+                    
+                    // Insert into users table
+                    String insertUserQuery = "INSERT INTO users (userName, password) VALUES (?, ?)";
+                    PreparedStatement userStatement = connection.prepareStatement(insertUserQuery, Statement.RETURN_GENERATED_KEYS);
+                    userStatement.setString(1, username);
+                    userStatement.setString(2, password);
+                    int affectedRows = userStatement.executeUpdate();
+    
+                    if (affectedRows == 0) {
+                        throw new SQLException("Creating user failed, no rows affected.");
+                    }
+    
+                    // Get the generated user ID
+                    ResultSet generatedKeys = userStatement.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        int userId = generatedKeys.getInt(1);
+                        // Insert into the selected account type table
+                        String accountInsertQuery = getAccountInsertQuery(accountType);
+                        if (accountInsertQuery != null) {
+                            PreparedStatement accountStatement = connection.prepareStatement(accountInsertQuery);
+                            accountStatement.setInt(1, userId);
+                            // Set other account-specific parameters
+                            int accountRowsAffected = accountStatement.executeUpdate();
+                            if (accountRowsAffected == 0) {
+                                throw new SQLException("Inserting into account table failed.");
+                            }
+                        } else {
+                            throw new SQLException("Invalid account type.");
+                        }
+                    } else {
+                        throw new SQLException("Creating user failed, no ID obtained.");
+                    }
+    
+                    // Close resources
+                    userStatement.close();
+                    
+                } else {
+                    System.out.println("Invalid account type selection.");
+                }
+                
+                
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        catch(Exception e) {
-            e.printStackTrace();
+    
+        private static String getAccountType(int selection) {
+            switch (selection) {
+                case 1:
+                    return "CurrentAccount";
+                case 2:
+                    return "FixedDeposit";
+                case 3:
+                    return "SavingTable";
+                default:
+                    return null;
+            }
+        }
+    
+        private static String getAccountInsertQuery(String accountType) {
+            switch (accountType) {
+                case "CurrentAccount":
+                    return "INSERT INTO currentaccount (user_id) VALUES (?)";
+                case "SavingTable":
+                    return "INSERT INTO savingaccount (user_id) VALUES (?)";
+                case "FixedDeposit":
+                    return "INSERT INTO fixeddepositaccount (user_id) VALUES (?)";
+                default:
+                    return null;
+            }
         }
 
-    }
+
+
+
 
 
     public void deposit(double amount) {
