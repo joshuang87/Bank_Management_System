@@ -1,6 +1,6 @@
 package Bank.Account;
 
-public class CurrentAccount extends Account implements Withdrawable {
+public class CurrentAccount extends Account implements Withdrawable, Depositable {
     private double overdraftLimit;
 
     // Constructor to initialize current account details
@@ -9,12 +9,18 @@ public class CurrentAccount extends Account implements Withdrawable {
         this.overdraftLimit = overdraftLimit;
     }
 
+    @Override
+    public void deposit(double amount) {
+        setBalance(getBalance() + amount);
+        System.out.println("RM"+ amount + " deposited into Current Account. New balance: RM" + getBalance());
+    }
+
     // Override the withdraw method to handle overdraft and withdrawals
     @Override
     public void withdraw(double amount) {
         double newBalance = getBalance() - amount;
         if (newBalance >= -overdraftLimit) {
-            System.out.println(amount + " withdrawn from Current Account. Remaining balance: " + newBalance);
+            System.out.println("RM"+ amount + " withdrawn from Current Account. Remaining balance: " +"RM"+  newBalance);
             setBalance(newBalance);
         } else {
             System.out.println("Insufficient funds");

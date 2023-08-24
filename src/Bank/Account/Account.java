@@ -10,11 +10,11 @@ public abstract class Account {
         this.balance = 0.0;
     }
 
-    // Method to deposit money into the account
-    public void deposit(double amount) {
-        balance += amount;
-        System.out.println(amount + " deposited. Current balance: " + balance);
-    }
+    // Abstract Method to deposit money into the account (to be implemented by subclasses)
+    public abstract void deposit(double amount);
+
+    // Abstract method for withdrawing money (to be implemented by subclasses)
+    public abstract void withdraw(double amount);
 
     // Getter method to retrieve the account balance
     public double getBalance() {
@@ -30,7 +30,4 @@ public abstract class Account {
     public String getAccountNumber() {
         return accountNumber;
     }
-
-    // Abstract method for withdrawing money (to be implemented by subclasses)
-    public abstract void withdraw(double amount);
 }
