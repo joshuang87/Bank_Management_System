@@ -1,58 +1,25 @@
 package Bank.Account;
 
-import static Bank.Account.Account.DB_URL;
-import static Bank.Account.Account.DB_USER;
 
-
-import java.sql.*;
-
-public class SavingsAccount extends Account{
-    
-    private double interestRate = 0.6;
-    private double balance; 
-
-    public SavingsAccount(double interestRate, double balance) {
-        this.interestRate = interestRate;
-        this.balance = balance;
+public class SavingsAccount extends Account implements Withdrawable {
+    // Constructor to initialize savings account details
+    public SavingsAccount(String accountNumber) {
+        super(accountNumber);
     }
 
-    public double getInteresRate(){
-        return interestRate;
-    }
+    // Override the withdraw method to handle savings account withdrawals
+    @Override
+    public void withdraw(double amount) {
 
-    public double getBalance(){
-        return balance;
-    }
+        double newBalance = getBalance() - amount;
 
-    public void setInteresRate(double interestRate){
-        this.interestRate = interestRate;
-    }
-
-    public void setBalance(double balance){
-        this.balance = balance;
-    }
-
-    public void deposit(double amount) {
-
-        balance += amount;
-
-        try(Connection connection = getConnection()) {
-
-            Statement statement = connection.createStatement();
-
-            String updateStatement = "UPDATE users SET balance=" + balance + " WHERE id=1";
-            
-            PreparedStatement preparedStatement = connection.prepareStatement(updateStatement);
-
-            preparedStatement.executeUpdate();
-
-            statement.close();
-            connection.close();
-            
+        if (newBalance >= 0) {
+            System.out.println(amount + " withdrawn from Savings Account. Remaining balance: " + newBalance);
+            setBalance(newBalance);
+        } else {
+            System.out.println("Insufficient funds");
         }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
 }

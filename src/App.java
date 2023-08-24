@@ -1,80 +1,32 @@
-import java.util.Scanner;
-import Bank.*;
-import Bank.Account.Account;
+
+import Bank.Account.CurrentAccount;
+import Bank.Account.FixedDepositAccount;
+import Bank.Account.LoanAccount;
+import Bank.Account.SavingsAccount;
+import java.util.Date;
 
 public class App {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
+        // Create instances of different types of accounts
+        CurrentAccount currentAccount = new CurrentAccount("C123", 1000.0);
+        SavingsAccount savingsAccount = new SavingsAccount("S456");
+        FixedDepositAccount fixedDepositAccount = new FixedDepositAccount("FD789", new Date());
+        LoanAccount loanAccount = new LoanAccount("L987", 5000.0);
 
-        Account account = new Account();
-        Login login = new Login();
-        boolean exit = false;
+        // Deposit, withdraw, and demonstrate behavior of different accounts
+        currentAccount.deposit(2000);
+        currentAccount.withdraw(1500);
 
-         Scanner inputScanner = new Scanner(System.in);
+        savingsAccount.deposit(1000);
+        savingsAccount.withdraw(500);
 
-         while (!exit) {
-            System.out.println("1 : Create Account ");
-            System.out.println("2 : Login ");
-            System.out.println("3 : Exit ");
+        fixedDepositAccount.deposit(5000);
+        fixedDepositAccount.withdraw(2000);
 
-            int answer = inputScanner.nextInt();
-
-
-
-                 if (answer == 1) {
-
-                    account.registerUser();
-
-                }
-
-                else if(answer==2){
-
-                    login.accountValidation();
-
-                    boolean backToMenu = true;
-
-                    while(backToMenu){
-                        System.out.println("1. Display Balance\n2. Save Money\n3. Withdraw Money\n4. Back to Menu");
-                        int action = inputScanner.nextInt();
-
-                        switch(action){
-                            case 1:
-                            break;
-
-                            case 2:
-                            break;
-
-                            case 3:
-                            break;
-
-                            case 4:
-                                backToMenu = false;
-
-                            break;
-
-                            default:
-                                System.out.println("Invalid action");
-                            break;
-                        }
-                    }
-
-                }
-
-                else if (answer == 3) {
-                    exit = true;
-                    System.out.println("Exiting the program.");
-                }
-
-                else {
-                    System.out.println("Invalid choice.");
-                }
-            }
-
-        // account.createAccount();
-        //account.deposit(1000);
-
-        inputScanner.close();
-
+        loanAccount.deposit(10000);
+        System.out.println("Interest: " + loanAccount.calculateInterest());
     }
+
 
 }
