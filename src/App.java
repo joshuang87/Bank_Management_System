@@ -4,16 +4,18 @@ import Bank.Account.FixedDepositAccount;
 import Bank.Account.LoanAccount;
 import Bank.Account.SavingsAccount;
 import java.util.Date;
+import java.text.DecimalFormat;
 
 public class App {
 
     public static void main(String[] args) {
+        DecimalFormat decimalFormat = new DecimalFormat("#.00"); //make result in two decimal
         // Create instances of different types of accounts
         CurrentAccount currentAccount = new CurrentAccount("C123", 1000.0);
         SavingsAccount savingsAccount = new SavingsAccount("S456");
         FixedDepositAccount fixedDepositAccount = new FixedDepositAccount("FD789", new Date(System.currentTimeMillis() + 86400000)); //next day
         FixedDepositAccount fixedDepositAccount2 = new FixedDepositAccount("FD1289", new Date());
-        LoanAccount loanAccount = new LoanAccount("L987", 5000.0);
+        LoanAccount loanAccount = new LoanAccount("L987", 45000.0,9);
 
         // Deposit, withdraw, and demonstrate behavior of different accounts
         System.out.println("Current Account");
@@ -56,9 +58,12 @@ public class App {
         System.out.println("");
 
         System.out.println("Loan Account");
-        loanAccount.deposit(10000);
+        loanAccount.deposit(20000);
         loanAccount.withdraw(5000);
-        System.out.println("Interest: RM" + loanAccount.calculateInterest());
+        System.out.println("The loan amount: RM" + loanAccount.getLoanAmount());
+        System.out.println("Interest: " + loanAccount.getInterestRate());
+        System.out.println("Total payment per month : RM" + decimalFormat.format(loanAccount.calculateMonthlyPayment()));
+        System.out.println("Total Interest need to pay for "+ loanAccount.getYear() +" year: RM" + decimalFormat.format(loanAccount.calculateInterest()));
         System.out.println("");
     }
 

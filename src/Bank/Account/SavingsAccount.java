@@ -2,7 +2,7 @@ package Bank.Account;
 
 
 public class SavingsAccount extends Account implements Withdrawable,Depositable{
-    private static final double interestRate = 0.06;
+    private static final double interestRate = 0.006;
 
     // Constructor to initialize savings account details
     public SavingsAccount(String accountNumber) {

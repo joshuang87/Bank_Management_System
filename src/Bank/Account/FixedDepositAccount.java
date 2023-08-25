@@ -2,7 +2,7 @@ package Bank.Account;
 import java.util.Date;
 public class FixedDepositAccount extends Account implements Withdrawable,Depositable {
     private Date maturityDate;
-    private static final double interestRate = 4.2;
+    private static final double interestRate = 0.042;
 
     // Constructor to initialize fixed deposit account details
     public FixedDepositAccount(String accountNumber, Date maturityDate) {
