@@ -21,6 +21,9 @@ public class App {
         System.out.println("Current Account");
         currentAccount.deposit(2000);
         currentAccount.withdraw(1500);
+        System.out.println("");
+        System.out.println("( if withdraw exceed overdraw limit )");
+        currentAccount.withdraw(3500);
         System.out.println("-------------------------------------------------------------");
         System.out.println("");
 
