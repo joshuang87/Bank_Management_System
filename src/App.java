@@ -3,8 +3,8 @@
  Title: Bank Management System
 
  Fucntion
- All type account allow user deposit money into account.
- All type account can withdraw money from except
+ All type of account allow user deposit money into account.
+ All type of account can withdraw money from account except loan account.
  */
 
 
