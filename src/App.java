@@ -1,3 +1,11 @@
+/*
+ Title: Bank Management System
+
+ Fucntion
+ All type account allow user deposit money into account.
+ All type account can withdraw money from except
+ */
+
 
 import Bank.Account.CurrentAccount;
 import Bank.Account.FixedDepositAccount;
